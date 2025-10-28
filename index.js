@@ -14,8 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-// app.use(cors());
-app.use(cors({ origin: "*" }));
+app.use(cors());
 app.use(express.json()); // To parse JSON bodies
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
  // serve images
@@ -49,7 +48,7 @@ const taskRoutes = require("./routes/taskRoutes");
 // const staffRoutes = require("./routes/staffRoutes");
 
 // ✅ Add Cron Import Here
-//  require("./utils/reminderCron");  // <<<<<<<<<<<<<<<<<<< ADDED
+ require("./utils/reminderCron");  // <<<<<<<<<<<<<<<<<<< ADDED
 
 // app.use("/api/staff", staffRoutes);
 app.use("/api/companies", companyRoutes);

@@ -1,9 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/cron/dailyReminder",
-      "schedule": "39 12 * * *"
-    }
-  ]
-}
-

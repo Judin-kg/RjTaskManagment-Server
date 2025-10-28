@@ -9,55 +9,55 @@
  
 // reminderCron.js
 
-// const cron = require("node-cron");
-// const Task = require("../models/Task");
-// const axios = require("axios");
+const cron = require("node-cron");
+const Task = require("../models/Task");
+const axios = require("axios");
 
-// // Run cron **only** if this instance is marked as the "primary" worker
-// if (process.env.ENABLE_CRON === "true") {
-//   cron.schedule("40 4 * * *", async () => {
-//     console.log("🔔 Running Daily Task Reminder at 10:30 AM IST (0 5 UTC)...");
-//     try {
-//       const pendingTasks = await Task.find({ status: "pending" })
-//         .populate("assignedTo", "name contactNumber");
-//       if (!pendingTasks.length) {
-//         console.log("✅ No pending tasks found.");
-//         return;
-//       }
+// Run cron **only** if this instance is marked as the "primary" worker
+if (process.env.ENABLE_CRON === "true") {
+  cron.schedule("40 4 * * *", async () => {
+    console.log("🔔 Running Daily Task Reminder at 10:30 AM IST (0 5 UTC)...");
+    try {
+      const pendingTasks = await Task.find({ status: "pending" })
+        .populate("assignedTo", "name contactNumber");
+      if (!pendingTasks.length) {
+        console.log("✅ No pending tasks found.");
+        return;
+      }
 
-//       for (const task of pendingTasks) {
-//         const user = task.assignedTo;
-//         if (!user || !user.contactNumber) continue;
+      for (const task of pendingTasks) {
+        const user = task.assignedTo;
+        if (!user || !user.contactNumber) continue;
 
-//         const contactNumber = user.contactNumber.startsWith("91")
-//           ? user.contactNumber
-//           : `91${user.contactNumber}`;
+        const contactNumber = user.contactNumber.startsWith("91")
+          ? user.contactNumber
+          : `91${user.contactNumber}`;
 
-//         const message = `⏰ *Daily Reminder*  
-// 📝 Task: ${task.taskName}  
-// 📅 Due: ${new Date(task.scheduledTime).toLocaleDateString()}  
-// ⚠️ Status: Pending  
-// \nPlease update your task in the portal.`;
+        const message = `⏰ *Daily Reminder*  
+📝 Task: ${task.taskName}  
+📅 Due: ${new Date(task.scheduledTime).toLocaleDateString()}  
+⚠️ Status: Pending  
+\nPlease update your task in the portal.`;
 
-//         await axios.post("https://waichat.com/api/send", {
-//           number: contactNumber,
-//           type: "text",
-//           message,
-//           instance_id: "68E0E2878A990",
-//           access_token: "68de6bd371bd8",
-//         });
-//         console.log(`✅ Reminder sent to ${user.name}`);
-//       }
-//     } catch (err) {
-//       console.error("❌ Cron Error:", err.message);
-//     }
-//   }, {
-//     timezone: "UTC", // Ensure UTC timezone
-//   });
-// } 
-// else {
-//   console.log("⏭️ Skipping cron — ENABLE_CRON is not true");
-// }
+        await axios.post("https://waichat.com/api/send", {
+          number: contactNumber,
+          type: "text",
+          message,
+          instance_id: "68E0E2878A990",
+          access_token: "68de6bd371bd8",
+        });
+        console.log(`✅ Reminder sent to ${user.name}`);
+      }
+    } catch (err) {
+      console.error("❌ Cron Error:", err.message);
+    }
+  }, {
+    timezone: "UTC", // Ensure UTC timezone
+  });
+} 
+else {
+  console.log("⏭️ Skipping cron — ENABLE_CRON is not true");
+}
 
 
 

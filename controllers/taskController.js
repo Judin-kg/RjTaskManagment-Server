@@ -1,4 +1,4 @@
-const Task = require("../api/model/Task");
+const Task = require("../models/Task");
 
 const axios = require("axios"); 
 // const Task = require("../models/Task");
