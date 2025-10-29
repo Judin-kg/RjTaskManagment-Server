@@ -14,29 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-// app.use(cors());
-
-// ✅ Secure CORS Configuration
-const allowedOrigins = [
-  "https://rjaltas-task-managment.vercel.app", // your frontend hosted on Vercel
-  "http://localhost:3000",                     // for local testing
-];
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // allow requests with no origin (like mobile apps or curl)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        console.warn(`❌ Blocked CORS request from: ${origin}`);
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(express.json()); // To parse JSON bodies
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
  // serve images
@@ -70,7 +48,7 @@ const taskRoutes = require("./routes/taskRoutes");
 // const staffRoutes = require("./routes/staffRoutes");
 
 // ✅ Add Cron Import Here
-//  require("./utils/reminderCron");  // <<<<<<<<<<<<<<<<<<< ADDED
+ require("./utils/reminderCron");  // <<<<<<<<<<<<<<<<<<< ADDED
 
 // app.use("/api/staff", staffRoutes);
 app.use("/api/companies", companyRoutes);
