@@ -48,7 +48,7 @@ const taskRoutes = require("./routes/taskRoutes");
 // const staffRoutes = require("./routes/staffRoutes");
 
 // ✅ Add Cron Import Here
- require("./utils/reminderCron");  // <<<<<<<<<<<<<<<<<<< ADDED
+//  require("./utils/reminderCron");  // <<<<<<<<<<<<<<<<<<< ADDED
 
 // app.use("/api/staff", staffRoutes);
 app.use("/api/companies", companyRoutes);
