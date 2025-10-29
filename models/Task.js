@@ -6,7 +6,7 @@ const taskSchema = new mongoose.Schema(
     description: { type: String },
     scheduledTime: { type: Date, required: true },
     role: { type: String, enum: ["myself", "manager", "assistantmanager", "staff"], required: true },
-    assignedTo: { type: mongoose.Schema.Types.ObjectId}, // can point to manager, assistant manager, or staff
+    assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "Staff"}, // can point to manager, assistant manager, or staff
      assignedBy: { type: mongoose.Schema.Types.ObjectId, ref: "Staff"}, // ✅ new field to track who assigned the task
      status: { type: String, default: "pending", enum: ["pending", "in-progress", "completed"] },
     //  company: {
