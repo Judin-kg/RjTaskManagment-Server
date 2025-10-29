@@ -51,11 +51,10 @@
 
 
 
-const mongoose = require("mongoose");
 const Task = require("../models/Task");
-require("../models/Staff"); // ✅ Add this line
 const axios = require("axios");
 require("dotenv").config();
+
 
 module.exports = async function handler(req, res) {
   if (req.method !== "GET") {
@@ -64,15 +63,6 @@ module.exports = async function handler(req, res) {
 
   try {
     console.log("🔔 Running Daily Task Reminder (Triggered by Vercel Cron)");
-
-    // MongoDB connection using .env MONGO_URI
-    if (!mongoose.connection.readyState) {
-      await mongoose.connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-      console.log("✅ Connected to MongoDB");
-    }
 
     const pendingTasks = await Task.find({ status: "pending" })
       .populate("assignedTo", "name contactNumber");
@@ -112,11 +102,5 @@ console.log(pendingTasks,"pendinggg");
   } catch (err) {
     console.error("❌ Error sending reminders:", err.message);
     res.status(500).json({ error: err.message });
-  } finally {
-    // Close connection after execution (important for serverless)
-    if (mongoose.connection.readyState) {
-      await mongoose.connection.close();
-      console.log("🔒 MongoDB connection closed");
-    }
   }
 };

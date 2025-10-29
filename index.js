@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const path = require("path");
 const seedAdmin = require('./seedAdmin'); 
 
-
+const reminderHandler = require("./api/dailyReminder");
 // 👈 import
 // Load environment variables
 dotenv.config();
@@ -20,10 +20,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
  // serve images
 // DB Connection
 mongoose
-  .connect(process.env.MONGO_URI || 'mongodb+srv://rjatlasdigitalai:1qaz2wsx@cluster0.sxanvzr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI || 'mongodb+srv://rjatlasdigitalai:1qaz2wsx@cluster0.sxanvzr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
   .then(async () => {
     console.log('✅ MongoDB connected');
 
@@ -78,6 +75,7 @@ app.use('/api/user', userRoutes);
 // app.use("/api/subcategories", subCategoryRoutes);
 
 // Default Route
+app.get("/api/dailyReminder", reminderHandler); // Mount your route
 app.get('/', (req, res) => {
   res.send('Server is running...');
 });
