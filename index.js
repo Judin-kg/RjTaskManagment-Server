@@ -11,7 +11,7 @@ const reminderHandler = require("./api/dailyReminder");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
@@ -45,7 +45,7 @@ const taskRoutes = require("./routes/taskRoutes");
 // const staffRoutes = require("./routes/staffRoutes");
 
 // ✅ Add Cron Import Here
-//  require("./utils/reminderCron");  // <<<<<<<<<<<<<<<<<<< ADDED
+ require("./utils/reminderCron");  // <<<<<<<<<<<<<<<<<<< ADDED
 
 // app.use("/api/staff", staffRoutes);
 app.use("/api/companies", companyRoutes);
