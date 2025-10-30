@@ -5,13 +5,12 @@ const dotenv = require('dotenv');
 const path = require("path");
 const seedAdmin = require('./seedAdmin'); 
 
-const reminderHandler = require("./api/dailyReminder");
 // 👈 import
 // Load environment variables
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -75,7 +74,6 @@ app.use('/api/user', userRoutes);
 // app.use("/api/subcategories", subCategoryRoutes);
 
 // Default Route
-app.get("/api/dailyReminder", reminderHandler); // Mount your route
 app.get('/', (req, res) => {
   res.send('Server is running...');
 });
