@@ -4,7 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require("path");
 const seedAdmin = require('./seedAdmin'); 
-
+require("./utils/reminderCron");
 // 👈 import
 // Load environment variables
 dotenv.config();
@@ -13,7 +13,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+// app.use(cors());
+app.use(cors(
+  {
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }
+));
 app.use(express.json()); // To parse JSON bodies
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
  // serve images
@@ -44,7 +51,7 @@ const taskRoutes = require("./routes/taskRoutes");
 // const staffRoutes = require("./routes/staffRoutes");
 
 // ✅ Add Cron Import Here
- require("./utils/reminderCron");  // <<<<<<<<<<<<<<<<<<< ADDED
+//  require("./utils/reminderCron");  // <<<<<<<<<<<<<<<<<<< ADDED
 
 // app.use("/api/staff", staffRoutes);
 app.use("/api/companies", companyRoutes);
