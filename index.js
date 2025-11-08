@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const path = require("path");
 const seedAdmin = require('./seedAdmin'); 
 require("./utils/reminderCron");
+
 // 👈 import
 // Load environment variables
 dotenv.config();
