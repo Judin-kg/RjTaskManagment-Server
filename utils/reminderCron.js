@@ -74,7 +74,7 @@ const axios = require("axios");
 
 // Run cron **only** if this instance is marked as the "primary" worker
   // Run every day at 9:30 AM
-  cron.schedule("0 * * * *", async () => {
+  cron.schedule("0 5 * * *", async () => {
     console.log("🔔 Running Daily Task Reminder at 10:00 AM IST...");
     try {
       const pendingTasks = await Task.find({ status: "pending" })
