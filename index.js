@@ -4,7 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require("path");
 const seedAdmin = require('./seedAdmin'); 
-require("./utils/reminderCron");
+// require("./utils/reminderCron");
 
 // 👈 import
 // Load environment variables
@@ -57,8 +57,8 @@ const taskRoutes = require("./routes/taskRoutes");
 // app.use("/api/staff", staffRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/tasks", taskRoutes);
-// const cronRoutes = require("./utils/reminderCron"); // <<<<<<<<<<<<<<<<<<< ADDED
-// app.use("/api", cronRoutes);
+const cronRoutes = require("./utils/reminderCron"); // <<<<<<<<<<<<<<<<<<< ADDED
+app.use("/api", cronRoutes);
 
 
 app.use("/api/assistant-managers", assistantManagerRoutes);
