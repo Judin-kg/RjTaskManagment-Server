@@ -21,7 +21,7 @@ const axios = require("axios");
 
 // Run cron **only** if this instance is marked as the "primary" worker
   // Run every day at 7:00 AM
-  cron.schedule("30 1 * * *", async () => {
+  cron.schedule("0 7 * * *", async () => {
     console.log("🔔 Running Daily Task Reminder at 7:00 AM IST...");
     try {
       const pendingTasks = await Task.find({ status: "pending" })
@@ -77,7 +77,8 @@ const axios = require("axios");
       console.error("Stack trace:", err.stack);
     }
   }, {
-    timezone: "UTC", // Schedule is set in UTC
+    // timezone: "UTC", // Schedule is set in UTC
+     timezone: "Asia/Kolkata",
   });
   
   console.log("⏱️ Daily reminder cron job scheduled for 9:18 PM IST (15:48 UTC)");
