@@ -46,15 +46,15 @@ const managerRoutes = require("./routes/managerRoutes");
 const departmentRoutes = require("./routes/departmentRoutes");
 const assistantManagerRoutes = require("./routes/assistantManagerRoutes");
 const companyRoutes = require("./routes/companyRoutes");
-
-
 const taskRoutes = require("./routes/taskRoutes");
+const billRoutes = require("./routes/billSectionRoutes");
 // const staffRoutes = require("./routes/staffRoutes");
 
 // ✅ Add Cron Import Here
 //  require("./utils/reminderCron");  // <<<<<<<<<<<<<<<<<<< ADDED
 
 // app.use("/api/staff", staffRoutes);
+app.use("/api/billsection", billRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/tasks", taskRoutes);
 // const cronRoutes = require("./utils/reminderCron"); // <<<<<<<<<<<<<<<<<<< ADDED
