@@ -58,12 +58,9 @@ exports.createTask = async (req, res) => {
       status: status || "pending",
       repeat: repeat || "once",
     });
-
     await task.save();
-
     console.log(task, "✅ Task Createddddddddd");
-
-    // ✅ Populate references
+     // ✅ Populate references
     const populatedTask = await task.populate([
       { path: "assignedTo", select: "name email contactNumber" },
       { path: "assignedBy", select: "name email" },

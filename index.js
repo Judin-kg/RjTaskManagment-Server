@@ -48,6 +48,7 @@ const assistantManagerRoutes = require("./routes/assistantManagerRoutes");
 const companyRoutes = require("./routes/companyRoutes");
 const taskRoutes = require("./routes/taskRoutes");
 const billRoutes = require("./routes/billSectionRoutes");
+const paidAdRoutes = require("./routes/paidAdRoutes");
 // const staffRoutes = require("./routes/staffRoutes");
 
 // ✅ Add Cron Import Here
@@ -81,6 +82,7 @@ app.use("/api/managers", managerRoutes);
 // app.use("/api/smiths", smithRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
+app.use("/api/paid-ads", paidAdRoutes);
 // app.use('/api/admin', adminRoutes);
 // app.use("/api/subcategories", subCategoryRoutes);
 
