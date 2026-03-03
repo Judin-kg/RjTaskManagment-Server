@@ -20,11 +20,21 @@ const paidAdSchema = new mongoose.Schema(
       enum: ["reach", "lead"],
       required: true,
     },
-    platform: {
-      type: String,
-      enum: ["facebook", "instagram"],
-      required: true,
+    // platform: {
+    //   type: String,
+    //   enum: ["facebook", "instagram"],
+    //   required: true,
+    // },
+    result:{
+       type: Number,
+      required: true,  
     },
+
+    costperResult:{
+       type: Number,
+      required: true,  
+    },
+
     totalMessages: {
       type: Number,
       default: 0,
