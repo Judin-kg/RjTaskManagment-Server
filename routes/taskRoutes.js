@@ -3,6 +3,9 @@ const router = express.Router();
 const taskController = require("../controllers/taskController");
 
 
+// ✅ Staff Performance route FIRST
+router.get("/staff-performance", taskController.getStaffPerformance);
+router.get("/monthly-performance", taskController.getMonthlyStaffPerformance);
 
 router.get("/reports",taskController.getTaskReports);
 // Create task
@@ -21,6 +24,8 @@ router.put("/:id", taskController.updateTask);
 router.delete("/:id", taskController.deleteTask);
 // ✅ Get tasks by userId
 router.get("/user/:userId",taskController.getTasksByUser);
+
+
 
 
 

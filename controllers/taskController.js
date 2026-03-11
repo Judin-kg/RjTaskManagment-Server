@@ -673,3 +673,237 @@ exports.getTaskReports = async (req, res) => {
 //   }
 // };
 
+
+// 📊 Staff Performance Report
+// exports.getStaffPerformance = async (req, res) => {
+
+//   console.log(req.res,"reqqqqqqqqqqqqqqqqqqq");
+  
+//   try {
+//     const workingDays = 30;
+
+//     const performance = await Task.aggregate([
+//       {
+//         $group: {
+//           _id: "$assignedTo",
+//           totalTasks: { $sum: 1 },
+//           completedTasks: {
+//             $sum: {
+//               $cond: [{ $eq: ["$status", "completed"] }, 1, 0],
+//             },
+//           },
+//         },
+//       },
+//       {
+//         $lookup: {
+//           from: "staffs", // collection name
+//           localField: "_id",
+//           foreignField: "_id",
+//           as: "staff",
+//         },
+//       },
+//       {
+//         $unwind: {
+//           path: "$staff",
+//           preserveNullAndEmptyArrays: true,
+//         },
+//       },
+//       {
+//         $project: {
+//           staffId: "$_id",
+//           name: "$staff.name",
+//           email: "$staff.email",
+//           totalTasks: 1,
+//           completedTasks: 1,
+//           performance: {
+//             $multiply: [
+//               { $divide: ["$totalTasks", workingDays] },
+//               100,
+//             ],
+//           },
+//         },
+//       },
+//       {
+//         $sort: { performance: -1 },
+//       },
+//     ]);
+
+
+// console.log(performance,"perfomanceeeeeeeeeeeeeeeeeee");
+
+
+//     res.json({
+//       success: true,
+//       workingDays,
+//       data: performance,
+//     });
+//   } catch (err) {
+//     console.error("❌ Staff performance error:", err);
+//     res.status(500).json({ error: "Failed to fetch staff performance" });
+//   }
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+exports.getStaffPerformance = async (req, res) => {
+
+  try {
+
+    // ✅ Get current month total days
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+
+    const totalWorkingDays = new Date(year, month + 1, 0).getDate();
+
+    const performance = await Task.aggregate([
+      {
+        $group: {
+          _id: "$assignedTo",
+          totalTasks: { $sum: 1 },
+          completedTasks: {
+            $sum: {
+              $cond: [{ $eq: ["$status", "completed"] }, 1, 0],
+            },
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "staffs",
+          localField: "_id",
+          foreignField: "_id",
+          as: "staff",
+        },
+      },
+      {
+        $unwind: {
+          path: "$staff",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          staffId: "$_id",
+          name: { $ifNull: ["$staff.name", "Unknown Staff"] },
+          email: { $ifNull: ["$staff.email", "No Email"] },
+          totalTasks: 1,
+          completedTasks: 1,
+
+          // ✅ performance based on real days
+          performance: {
+            $multiply: [
+              { $divide: ["$totalTasks", totalWorkingDays] },
+              100,
+            ],
+          },
+        },
+      },
+      {
+        $sort: { performance: -1 },
+      },
+    ]);
+
+    console.log(performance, "performance");
+
+    res.json({
+      success: true,
+      workingDays: totalWorkingDays,
+      data: performance,
+    });
+
+  } catch (err) {
+    console.error("❌ Staff performance error:", err);
+    res.status(500).json({ error: "Failed to fetch staff performance" });
+  }
+};
+
+
+
+
+
+
+// 📊 Monthly Staff Performance
+exports.getMonthlyStaffPerformance = async (req, res) => {
+  try {
+    const workingDays = 30;
+
+    const performance = await Task.aggregate([
+      {
+        $addFields: {
+          month: { $month: "$scheduledTime" },
+          year: { $year: "$scheduledTime" },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            staff: "$assignedTo",
+            month: "$month",
+            year: "$year",
+          },
+          totalTasks: { $sum: 1 },
+          completedTasks: {
+            $sum: {
+              $cond: [{ $eq: ["$status", "completed"] }, 1, 0],
+            },
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "staffs",
+          localField: "_id.staff",
+          foreignField: "_id",
+          as: "staffDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$staffDetails",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          staffId: "$_id.staff",
+          name: "$staffDetails.name",
+          month: "$_id.month",
+          year: "$_id.year",
+          totalTasks: 1,
+          completedTasks: 1,
+          performance: {
+            $multiply: [{ $divide: ["$totalTasks", workingDays] }, 100],
+          },
+        },
+      },
+      {
+        $sort: { year: -1, month: -1 },
+      },
+    ]);
+
+    res.json({
+      success: true,
+      data: performance,
+    });
+  } catch (err) {
+    console.error("Monthly performance error:", err);
+    res.status(500).json({ error: "Failed to fetch monthly performance" });
+  }
+};
